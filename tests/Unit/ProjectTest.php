@@ -14,8 +14,6 @@ class ProjectTest extends TestCase
   public function it_has_a_path()
   {
 
-    //   $this->withoutExceptionHandling();
-
       $project = factory('App\Project')->create();
 
       $this->assertEquals("/projects/{$project->id}", $project->path());
