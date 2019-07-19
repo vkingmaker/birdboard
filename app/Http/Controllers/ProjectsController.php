@@ -15,10 +15,21 @@ class ProjectsController extends Controller
 
     public function index()
     {
-        $projects = Project::all();
+        $projects = auth()->user()->projects;
 
         return view('projects.index', compact('projects'));
     }
+
+    /**
+     * Create a Project
+     *
+     */
+
+
+     public function create()
+     {
+         return view('projects.create');
+     }
 
     /**
      *  Validates and saves projects to the database.
@@ -38,8 +49,6 @@ class ProjectsController extends Controller
 
         auth()->user()->projects()->create($attributes);
 
-        // Project::create($attributes);
-
         return redirect('/projects');
     }
 
@@ -50,6 +59,12 @@ class ProjectsController extends Controller
 
     public function show(Project $project)
     {
+        if(auth()->user()->isNot($project->owner)) {
+
+            abort(403);
+
+        }
+
         return view('projects.show', compact('project'));
     }
 }
