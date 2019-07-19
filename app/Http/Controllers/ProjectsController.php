@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Project;
 
 class ProjectsController extends Controller
@@ -32,8 +31,9 @@ class ProjectsController extends Controller
      }
 
     /**
-     *  Validates and saves projects to the database.
+     *  Persist a new project
      *
+     *  @return \Illuminate\Http\RedirectResponse
      */
 
     public function store()
@@ -47,9 +47,9 @@ class ProjectsController extends Controller
 
             ]);
 
-        auth()->user()->projects()->create($attributes);
+       $project = auth()->user()->projects()->create($attributes);
 
-        return redirect('/projects');
+        return redirect($project->path());
     }
 
     /**

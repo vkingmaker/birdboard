@@ -23,7 +23,6 @@ class UserTest extends TestCase
   /** @test */
   public function it_belongs_to_an_owner()
   {
-    $this->withoutExceptionHandling();
 
     $project = factory('App\Project')->create();
 
