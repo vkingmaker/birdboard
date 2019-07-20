@@ -23,7 +23,7 @@ class Project extends Model
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'owner_id');
+        return $this->hasMany(Task::class);
     }
 
     public function addTask($body)

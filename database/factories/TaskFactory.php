@@ -11,7 +11,7 @@ $factory->define(Task::class, function (Faker $faker) {
 
         'body' => $faker->paragraph,
 
-        'project_id' => factory('Project\User')->create()->id,
+        'project_id' => factory('App\Project')->create()->id,
     ];
 });
 
