@@ -60,5 +60,9 @@
                 @endif
             </div>
         </div>
+        <div style="color:red;">
+             @include('errors')
+        </div>
     </form>
+
 @endsection

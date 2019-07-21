@@ -36,28 +36,63 @@ class ManageProjectsTest extends TestCase
 
         $this->get('/projects/create')->assertStatus(200);
 
-        $attributes = [
+        $this->followingRedirects()
 
-            'title' => $this->faker->sentence,
+        ->post('/projects', $attributes =  factory(Project::class)->raw())
 
-            'description' => $this->faker->sentence,
+                ->assertSee($attributes['title'])
 
-            'notes' => 'General notes here',
-        ];
+                ->assertSee($attributes['description'])
 
-        $response = $this->post('/projects', $attributes);
+                ->assertSee($attributes['notes']);
+    }
 
-        $project = Project::where($attributes)->first();
+    /** @test */
+    public function a_user_can_see_all_the_projects_they_have_been_invited_to_on_their_dashboard()
+    {
+        $project = tap(ProjectFactory::create())->invite($this->signIn());
 
-        $response->assertRedirect($project->path());
+        $this->get('/projects')->assertSee($project->title);
+    }
 
-        $this->get($project->path())
+    /** @test */
+    public function a_user_delete_a_project()
+    {
+        $project = ProjectFactory::create();
 
-            ->assertSee($attributes['title'])
+        $this->actingAs($project->owner)
 
-            ->assertSee($attributes['description'])
+                ->delete($project->path())
 
-            ->assertSee($attributes['notes']);
+                ->assertRedirect('/projects');
+
+        $this->assertDatabaseMissing('projects', $project->only('id'));
+
+    }
+
+    /** @test */
+    public function unauthorized_users_cannot_delete_a_project()
+    {
+        $this->withExceptionHandling();
+
+        $project = ProjectFactory::create();
+
+        $this->delete($project->path())
+
+                ->assertRedirect('/login');
+
+        $user = $this->signIn();
+
+        $this->delete($project->path())
+
+                ->assertStatus(403);
+
+        $project->invite($user);
+
+        $this->actingAs($user)->delete($project->path())
+
+            ->assertStatus(403);
+
     }
 
     /** @test */

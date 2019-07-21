@@ -18,6 +18,7 @@ class ProjectObserver
         $project->recordActivity('created');
     }
 
+
     /**
      * Handle the project "updated" event.
      *

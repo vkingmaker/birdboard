@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $guarded = [];
 
+    use RecordsActivity;
+
+    protected $guarded = [];
 
     public function path()
     {
@@ -32,19 +34,14 @@ class Project extends Model
     }
 
 
-    public function activity()
+    public function invite(User $user)
     {
-        return $this->hasMany(Activity::class)->latest();
+        return $this->members()->attach($user);
     }
 
-    /**
-     * The activity feed for the project
-     *
-     * @return \Illuminate\Database\Eloquent\Relationships\HasMany
-     */
 
-    public function recordActivity($description)
+    public function members()
     {
-        $this->activity()->create(compact('description'));
+        return $this->belongsToMany(User::class, 'project_members')->withTimestamps();
     }
 }

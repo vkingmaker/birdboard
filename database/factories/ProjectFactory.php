@@ -11,6 +11,8 @@ $factory->define(Project::class, function (Faker $faker) {
 
         'description' => $faker->sentence(4),
 
+        'notes' => 'Foobar notes',
+
         'owner_id' => factory('App\User')->create()->id,
     ];
 });
