@@ -23,12 +23,23 @@ class TaskTest extends TestCase
     }
 
     /** @test */
-    public function task_has_a_path()
+    public function it_has_a_path()
     {
-        $this->withoutExceptionHandling();
 
         $task = factory('App\Task')->create();
 
         $this->assertEquals($task->path(), $task->path());
+    }
+
+    /** @test */
+    public function it_can_be_completed()
+    {
+        $task = factory('App\Task')->create();
+
+        $this->assertFalse($task->completed);
+
+        $task->complete();
+
+        $this->assertTrue($task->fresh()->completed);
     }
 }
