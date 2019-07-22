@@ -60,8 +60,6 @@ class TriggerActivityTest extends TestCase
     /** @test */
     public function creating_a_new_task()
     {
-        // $this->withoutExceptionHandling();
-
         $project = ProjectFactory::create();
 
         $project->addTask('Some task');

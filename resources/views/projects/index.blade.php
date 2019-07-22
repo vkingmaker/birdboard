@@ -31,4 +31,6 @@
 
 </main>
 
+<new-project-modal></new-project-modal>
+
 @endsection
